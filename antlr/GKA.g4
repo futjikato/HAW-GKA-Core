@@ -10,14 +10,14 @@ grammar GKA;
       import java.util.List;
       import java.util.ArrayList;
       import de.futjikato.gka.Edge;
-      import de.futjikato.gka.GrapgFactory;
+      import de.futjikato.gka.GraphFactory;
 }
 
 @members {
           
-          private GrapgFactory graphFactory = new GrapgFactory();
+          private GraphFactory graphFactory = new GraphFactory();
           
-          public GrapgFactory getGraphFactory() {
+          public GraphFactory getGraphFactory() {
               return graphFactory;
           }
           
@@ -63,7 +63,7 @@ weight	:	DIGIT+;
 	
 node	:	name;
 
-name	:	LETTER (LETTER|DIGIT)*;
+name	:	(LETTER|DIGIT)+;
 
 LETTER	:	('a'..'z'|'A'..'Z'|'ü'|'ä'|'ö'|'ß'|'Ü'|'Ä'|'Ö');
 

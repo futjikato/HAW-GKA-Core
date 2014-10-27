@@ -4,7 +4,7 @@ package de.futjikato.gka.reader;
       import java.util.List;
       import java.util.ArrayList;
       import de.futjikato.gka.Edge;
-      import de.futjikato.gka.GrapgFactory;
+      import de.futjikato.gka.GraphFactory;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -39,9 +39,9 @@ public class GKALexer extends Lexer {
 
 
 	          
-	          private GrapgFactory graphFactory = new GrapgFactory();
+	          private GraphFactory graphFactory = new GraphFactory();
 	          
-	          public GrapgFactory getGraphFactory() {
+	          public GraphFactory getGraphFactory() {
 	              return graphFactory;
 	          }
 	          

@@ -6,7 +6,7 @@ import org.jgrapht.graph.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GrapgFactory {
+public class GraphFactory {
 
     private List<Edge> edges = new LinkedList<Edge>();
 
@@ -15,7 +15,7 @@ public class GrapgFactory {
     private boolean isWeighted = false;
 
     public void addEdge(Edge edge) {
-        if(edge.getType().equals(Edge.DirectionType.DIRECTED)) {
+        if(edge.getType() != null && edge.getType().equals(Edge.DirectionType.DIRECTED)) {
             isDirectional = true;
         }
 
@@ -29,11 +29,11 @@ public class GrapgFactory {
     public Graph getGraph() {
         Graph graph;
         if(isDirectional && isWeighted) {
-            graph = new SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+            graph = new DirectedWeightedPseudograph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
         } else if(isWeighted) {
-            graph = new SimpleWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+            graph = new WeightedPseudograph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
         } else if(isDirectional) {
-            graph = new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+            graph = new DirectedPseudograph<String, DefaultEdge>(DefaultEdge.class);
         } else {
             graph = new Pseudograph<String, DefaultEdge>(DefaultEdge.class);
         }
@@ -47,14 +47,14 @@ public class GrapgFactory {
                 if(!graph.containsVertex(edge.getNodeB())) {
                     graph.addVertex(edge.getNodeB());
                 }
-            }
 
-            // add edge
-            if(isDirectional && edge.getType().equals(Edge.DirectionType.UNDIRECTED)) {
-                graph.addEdge(edge.getNodeA(), edge.getNodeB());
-                graph.addEdge(edge.getNodeB(), edge.getNodeA());
-            } else {
-                graph.addEdge(edge.getNodeA(), edge.getNodeB());
+                // add edge
+                if(isDirectional && edge.getType().equals(Edge.DirectionType.UNDIRECTED )) {
+                    graph.addEdge(edge.getNodeA(), edge.getNodeB());
+                    graph.addEdge(edge.getNodeB(), edge.getNodeA());
+                } else {
+                    graph.addEdge(edge.getNodeA(), edge.getNodeB());
+                }
             }
         }
 

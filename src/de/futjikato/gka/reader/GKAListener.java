@@ -4,7 +4,7 @@ package de.futjikato.gka.reader;
       import java.util.List;
       import java.util.ArrayList;
       import de.futjikato.gka.Edge;
-      import de.futjikato.gka.GrapgFactory;
+      import de.futjikato.gka.GraphFactory;
 
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;

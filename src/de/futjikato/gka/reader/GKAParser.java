@@ -4,7 +4,7 @@ package de.futjikato.gka.reader;
       import java.util.List;
       import java.util.ArrayList;
       import de.futjikato.gka.Edge;
-      import de.futjikato.gka.GrapgFactory;
+      import de.futjikato.gka.GraphFactory;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -49,9 +49,9 @@ public class GKAParser extends Parser {
 
 
 	          
-	          private GrapgFactory graphFactory = new GrapgFactory();
+	          private GraphFactory graphFactory = new GraphFactory();
 	          
-	          public GrapgFactory getGraphFactory() {
+	          public GraphFactory getGraphFactory() {
 	              return graphFactory;
 	          }
 	          
@@ -105,7 +105,7 @@ public class GKAParser extends Parser {
 				setState(19); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==LETTER );
+			} while ( _la==LETTER || _la==DIGIT );
 			}
 		}
 		catch (RecognitionException re) {
@@ -510,14 +510,13 @@ public class GKAParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(52); match(LETTER);
-			setState(56);
+			setState(53); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==LETTER || _la==DIGIT) {
+			do {
 				{
 				{
-				setState(53);
+				setState(52);
 				_la = _input.LA(1);
 				if ( !(_la==LETTER || _la==DIGIT) ) {
 				_errHandler.recoverInline(this);
@@ -525,10 +524,10 @@ public class GKAParser extends Parser {
 				consume();
 				}
 				}
-				setState(58);
+				setState(55); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
+			} while ( _la==LETTER || _la==DIGIT );
 			}
 		}
 		catch (RecognitionException re) {
@@ -543,22 +542,22 @@ public class GKAParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\n>\4\2\t\2\4\3\t"+
+		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\n<\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\6\2\24\n\2\r\2"+
 		"\16\2\25\3\3\3\3\3\3\3\3\5\3\34\n\3\3\3\5\3\37\n\3\5\3!\n\3\3\3\3\3\3"+
 		"\3\3\4\3\4\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\7\6\7\61\n\7\r\7\16\7\62"+
-		"\3\b\3\b\3\t\3\t\7\t9\n\t\f\t\16\t<\13\t\3\t\2\n\2\4\6\b\n\f\16\20\2\4"+
-		"\3\2\5\6\3\2\3\4;\2\23\3\2\2\2\4\27\3\2\2\2\6%\3\2\2\2\b\'\3\2\2\2\n+"+
-		"\3\2\2\2\f\60\3\2\2\2\16\64\3\2\2\2\20\66\3\2\2\2\22\24\5\4\3\2\23\22"+
-		"\3\2\2\2\24\25\3\2\2\2\25\23\3\2\2\2\25\26\3\2\2\2\26\3\3\2\2\2\27 \5"+
-		"\16\b\2\30\31\5\6\4\2\31\33\5\16\b\2\32\34\5\b\5\2\33\32\3\2\2\2\33\34"+
-		"\3\2\2\2\34\36\3\2\2\2\35\37\5\n\6\2\36\35\3\2\2\2\36\37\3\2\2\2\37!\3"+
-		"\2\2\2 \30\3\2\2\2 !\3\2\2\2!\"\3\2\2\2\"#\7\t\2\2#$\b\3\1\2$\5\3\2\2"+
-		"\2%&\t\2\2\2&\7\3\2\2\2\'(\7\7\2\2()\5\20\t\2)*\7\7\2\2*\t\3\2\2\2+,\7"+
-		"\b\2\2,-\5\f\7\2-.\b\6\1\2.\13\3\2\2\2/\61\7\4\2\2\60/\3\2\2\2\61\62\3"+
-		"\2\2\2\62\60\3\2\2\2\62\63\3\2\2\2\63\r\3\2\2\2\64\65\5\20\t\2\65\17\3"+
-		"\2\2\2\66:\7\3\2\2\679\t\3\2\28\67\3\2\2\29<\3\2\2\2:8\3\2\2\2:;\3\2\2"+
-		"\2;\21\3\2\2\2<:\3\2\2\2\b\25\33\36 \62:";
+		"\3\b\3\b\3\t\6\t8\n\t\r\t\16\t9\3\t\2\n\2\4\6\b\n\f\16\20\2\4\3\2\5\6"+
+		"\3\2\3\49\2\23\3\2\2\2\4\27\3\2\2\2\6%\3\2\2\2\b\'\3\2\2\2\n+\3\2\2\2"+
+		"\f\60\3\2\2\2\16\64\3\2\2\2\20\67\3\2\2\2\22\24\5\4\3\2\23\22\3\2\2\2"+
+		"\24\25\3\2\2\2\25\23\3\2\2\2\25\26\3\2\2\2\26\3\3\2\2\2\27 \5\16\b\2\30"+
+		"\31\5\6\4\2\31\33\5\16\b\2\32\34\5\b\5\2\33\32\3\2\2\2\33\34\3\2\2\2\34"+
+		"\36\3\2\2\2\35\37\5\n\6\2\36\35\3\2\2\2\36\37\3\2\2\2\37!\3\2\2\2 \30"+
+		"\3\2\2\2 !\3\2\2\2!\"\3\2\2\2\"#\7\t\2\2#$\b\3\1\2$\5\3\2\2\2%&\t\2\2"+
+		"\2&\7\3\2\2\2\'(\7\7\2\2()\5\20\t\2)*\7\7\2\2*\t\3\2\2\2+,\7\b\2\2,-\5"+
+		"\f\7\2-.\b\6\1\2.\13\3\2\2\2/\61\7\4\2\2\60/\3\2\2\2\61\62\3\2\2\2\62"+
+		"\60\3\2\2\2\62\63\3\2\2\2\63\r\3\2\2\2\64\65\5\20\t\2\65\17\3\2\2\2\66"+
+		"8\t\3\2\2\67\66\3\2\2\289\3\2\2\29\67\3\2\2\29:\3\2\2\2:\21\3\2\2\2\b"+
+		"\25\33\36 \629";
 	public static final ATN _ATN =
 		ATNSimulator.deserialize(_serializedATN.toCharArray());
 	static {
