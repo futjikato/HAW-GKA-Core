@@ -20,7 +20,7 @@ public abstract class AbstractShortestWay implements ShortestWayAlgo {
         graph = Main.getGraphFromFile(filename);
     }
 
-    protected Graph getGraph() {
+    public Graph getGraph() {
         return graph;
     }
 
