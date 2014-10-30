@@ -31,6 +31,11 @@ public class BFS extends AbstractShortestWay {
 
     @Override
     public List<String> findWay(String nodeA, String nodeB) {
+        if(isValidRequest(nodeA, nodeB)) {
+            System.err.println("Request is invalid.");
+            return null;
+        }
+
         if(nodeA.equals(nodeB)) {
             System.out.println("BFS : 0 - Target equals start vertex.");
             return null;
@@ -48,6 +53,17 @@ public class BFS extends AbstractShortestWay {
         List<String> way = getShorttestWay(nodeA, nodeB);
         System.out.println(way);
         return way;
+    }
+
+    @Override
+    public boolean isValidRequest(String nodeA, String nodeB) {
+        g = getGraph();
+
+        if(!g.containsVertex(nodeA) || !g.containsVertex(nodeB)) {
+            return false;
+        }
+
+        return true;
     }
 
     private List<String> getShorttestWay(String nodeA, String nodeB) {
