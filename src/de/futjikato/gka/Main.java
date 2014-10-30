@@ -2,6 +2,7 @@ package de.futjikato.gka;
 
 import de.futjikato.gka.reader.GKALexer;
 import de.futjikato.gka.reader.GKAParser;
+import de.futjikato.gka.writer.GraphWriter;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.jgrapht.Graph;
