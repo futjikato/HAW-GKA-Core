@@ -10,9 +10,11 @@ public class GraphFactory {
 
     private List<Edge> edges = new LinkedList<Edge>();
 
-    private boolean isDirectional = false;
+    private boolean mapping = false;
 
     private boolean isWeighted = false;
+
+    private boolean isDirectional = false;
 
     public void addEdge(Edge edge) {
         if(edge.getType() != null && edge.getType().equals(Edge.DirectionType.DIRECTED)) {

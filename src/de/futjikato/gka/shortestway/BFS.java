@@ -1,6 +1,8 @@
 package de.futjikato.gka.shortestway;
 
 import de.futjikato.gka.JGraphView;
+
+import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -112,8 +114,10 @@ public class BFS extends AbstractShortestWay {
                 Set<DefaultEdge> edges = g.edgesOf(oneOfCurrent);
                 for(DefaultEdge e : edges) {
                     String target = g.getEdgeTarget(e);
-                    if(target.equals(oneOfCurrent)) {
-                        target = g.getEdgeSource(e);
+                    if(!(g instanceof DirectedGraph)) {
+	                    if(target.equals(oneOfCurrent)) {
+	                        target = g.getEdgeSource(e);
+	                    }
                     }
                     if(target.equals(oneOfCurrent)) {
                         continue;

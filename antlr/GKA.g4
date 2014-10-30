@@ -1,4 +1,4 @@
-/*
+–/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -70,7 +70,7 @@ LETTER	:	('a'..'z'|'A'..'Z'|'ü'|'ä'|'ö'|'ß'|'Ü'|'Ä'|'Ö');
 DIGIT	:	'0'..'9';
 
 DIRECTED_EDGE
-	:	'->'|'<-';
+	:	'->';
 
 UNDIRECTED_EDGE
 	:	'--';
