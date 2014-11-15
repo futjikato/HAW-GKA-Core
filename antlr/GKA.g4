@@ -1,4 +1,4 @@
-–/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,25 +9,29 @@ grammar GKA;
 @header {
       import java.util.List;
       import java.util.ArrayList;
-      import de.futjikato.gka.Edge;
+      import de.futjikato.gka.EdgeEntity;
       import de.futjikato.gka.GraphFactory;
+      import de.futjikato.gka.Vertex;
 }
 
 @members {
           
-          private GraphFactory graphFactory = new GraphFactory();
+          private GraphFactory<Vertex> graphFactory;
           
-          public GraphFactory getGraphFactory() {
+          public GraphFactory<Vertex> getGraphFactory() {
               return graphFactory;
           }
           
+          public void setGraphFactory(GraphFactory<Vertex> factory) {
+              this.graphFactory = factory;
+          }
 }
 
 prog	:	edge+;
 
 edge	:	a=node (c=conn b=node n=edge_name? w=edge_weight?)? COMM_END
                 {
-                    Edge edge = new Edge();
+                    EdgeEntity edge = new EdgeEntity();
                     edge.setNodeA($a.text);
                     if($b.text != null) {
                         edge.setNodeB($b.text);
@@ -39,7 +43,7 @@ edge	:	a=node (c=conn b=node n=edge_name? w=edge_weight?)? COMM_END
                         edge.setWeight(Integer.valueOf($w.retVal));
                     }
                     if($c.text != null) {
-                        Edge.DirectionType dt = Edge.DirectionType.getBySymbol($c.text);
+                        EdgeEntity.DirectionType dt = EdgeEntity.DirectionType.getBySymbol($c.text);
                         if(dt != null) {
                             edge.setType(dt);
                         }

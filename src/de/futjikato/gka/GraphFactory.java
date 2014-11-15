@@ -3,21 +3,20 @@ package de.futjikato.gka;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.*;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GraphFactory {
+public abstract class GraphFactory<T extends Vertex> {
 
-    private List<Edge> edges = new LinkedList<Edge>();
-
-    private boolean mapping = false;
+    private List<EdgeEntity> edges = new LinkedList<EdgeEntity>();
 
     private boolean isWeighted = false;
 
     private boolean isDirectional = false;
 
-    public void addEdge(Edge edge) {
-        if(edge.getType() != null && edge.getType().equals(Edge.DirectionType.DIRECTED)) {
+    public void addEdge(EdgeEntity edge) {
+        if(edge.getType() != null && edge.getType().equals(EdgeEntity.DirectionType.DIRECTED)) {
             isDirectional = true;
         }
 
@@ -28,34 +27,55 @@ public class GraphFactory {
         edges.add(edge);
     }
 
-    public Graph getGraph() {
+    public abstract T createVertex(String name);
+
+    public Graph createGraph() {
         Graph graph;
         if(isDirectional && isWeighted) {
-            graph = new DirectedWeightedPseudograph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+            graph = new DirectedWeightedPseudograph<T, DefaultWeightedEdge>(DefaultWeightedEdge.class);
         } else if(isWeighted) {
-            graph = new WeightedPseudograph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+            graph = new WeightedPseudograph<T, DefaultWeightedEdge>(DefaultWeightedEdge.class);
         } else if(isDirectional) {
-            graph = new DirectedPseudograph<String, DefaultEdge>(DefaultEdge.class);
+            graph = new DirectedPseudograph<T, DefaultEdge>(DefaultEdge.class);
         } else {
-            graph = new Pseudograph<String, DefaultEdge>(DefaultEdge.class);
+            graph = new Pseudograph<T, DefaultEdge>(DefaultEdge.class);
         }
 
-        for(Edge edge : edges) {
+        HashMap<String, T> map = new HashMap<String, T>();
+
+        for(EdgeEntity edge : edges) {
             // add vertices
-            if(!graph.containsVertex(edge.getNodeA())) {
-                graph.addVertex(edge.getNodeA());
+            T vertexA;
+            String vertexAName = edge.getNodeA();
+            if(!map.containsKey(vertexAName)) {
+                vertexA = createVertex(vertexAName);
+                map.put(vertexAName, vertexA);
+                graph.addVertex(vertexA);
+            } else {
+                vertexA = map.get(vertexAName);
             }
             if(edge.getNodeB() != null) {
-                if(!graph.containsVertex(edge.getNodeB())) {
-                    graph.addVertex(edge.getNodeB());
+                T vertexB;
+                String vertexBName = edge.getNodeB();
+                if(!map.containsKey(vertexBName)) {
+                    vertexB = createVertex(vertexBName);
+                    map.put(vertexBName, vertexB);
+                    graph.addVertex(vertexB);
+                } else {
+                    vertexB = map.get(vertexBName);
                 }
 
                 // add edge
-                if(isDirectional && edge.getType().equals(Edge.DirectionType.UNDIRECTED )) {
-                    graph.addEdge(edge.getNodeA(), edge.getNodeB());
-                    graph.addEdge(edge.getNodeB(), edge.getNodeA());
+                if(isDirectional && edge.getType().equals(EdgeEntity.DirectionType.UNDIRECTED )) {
+                    graph.addEdge(vertexA, vertexB);
+                    graph.addEdge(vertexB, vertexA);
+
+                    vertexB.connect(vertexA);
+                    vertexA.connect(vertexB);
                 } else {
-                    graph.addEdge(edge.getNodeA(), edge.getNodeB());
+                    graph.addEdge(vertexA, vertexB);
+
+                    vertexA.connect(vertexB);
                 }
             }
         }

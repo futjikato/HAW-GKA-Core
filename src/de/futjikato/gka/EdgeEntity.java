@@ -1,6 +1,6 @@
 package de.futjikato.gka;
 
-public class Edge {
+public class EdgeEntity {
 
     public enum DirectionType {
         DIRECTED("->"),

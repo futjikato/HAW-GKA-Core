@@ -1,10 +1,11 @@
-// Generated from /Users/moritzspindelhirn/HAW-GPA-Core/antlr/GKA.g4 by ANTLR 4.1
+// Generated from /home/moritz/java/HAW-GKA-Core/antlr/GKA.g4 by ANTLR 4.1
 package de.futjikato.gka.reader;
 
       import java.util.List;
       import java.util.ArrayList;
-      import de.futjikato.gka.Edge;
+      import de.futjikato.gka.EdgeEntity;
       import de.futjikato.gka.GraphFactory;
+      import de.futjikato.gka.Vertex;
 
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;

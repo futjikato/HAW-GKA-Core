@@ -1,10 +1,11 @@
-// Generated from /Users/moritzspindelhirn/HAW-GPA-Core/antlr/GKA.g4 by ANTLR 4.1
+// Generated from /home/moritz/java/HAW-GKA-Core/antlr/GKA.g4 by ANTLR 4.1
 package de.futjikato.gka.reader;
 
       import java.util.List;
       import java.util.ArrayList;
-      import de.futjikato.gka.Edge;
+      import de.futjikato.gka.EdgeEntity;
       import de.futjikato.gka.GraphFactory;
+      import de.futjikato.gka.Vertex;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -24,8 +25,8 @@ public class GKAParser extends Parser {
 		LETTER=1, DIGIT=2, DIRECTED_EDGE=3, UNDIRECTED_EDGE=4, NAME_BORDER=5, 
 		WEIGHT_BORDER=6, COMM_END=7, WS=8;
 	public static final String[] tokenNames = {
-		"<INVALID>", "LETTER", "DIGIT", "DIRECTED_EDGE", "'--'", "NAME_BORDER", 
-		"':'", "';'", "WS"
+		"<INVALID>", "LETTER", "DIGIT", "'->'", "'--'", "NAME_BORDER", "':'", 
+		"';'", "WS"
 	};
 	public static final int
 		RULE_prog = 0, RULE_edge = 1, RULE_conn = 2, RULE_edge_name = 3, RULE_edge_weight = 4, 
@@ -49,12 +50,15 @@ public class GKAParser extends Parser {
 
 
 	          
-	          private GraphFactory graphFactory = new GraphFactory();
+	          private GraphFactory<Vertex> graphFactory;
 	          
-	          public GraphFactory getGraphFactory() {
+	          public GraphFactory<Vertex> getGraphFactory() {
 	              return graphFactory;
 	          }
 	          
+	          public void setGraphFactory(GraphFactory<Vertex> factory) {
+	              this.graphFactory = factory;
+	          }
 
 	public GKAParser(TokenStream input) {
 		super(input);
@@ -195,7 +199,7 @@ public class GKAParser extends Parser {
 
 			setState(32); match(COMM_END);
 
-			                    Edge edge = new Edge();
+			                    EdgeEntity edge = new EdgeEntity();
 			                    edge.setNodeA((((EdgeContext)_localctx).a!=null?_input.getText(((EdgeContext)_localctx).a.start,((EdgeContext)_localctx).a.stop):null));
 			                    if((((EdgeContext)_localctx).b!=null?_input.getText(((EdgeContext)_localctx).b.start,((EdgeContext)_localctx).b.stop):null) != null) {
 			                        edge.setNodeB((((EdgeContext)_localctx).b!=null?_input.getText(((EdgeContext)_localctx).b.start,((EdgeContext)_localctx).b.stop):null));
@@ -207,7 +211,7 @@ public class GKAParser extends Parser {
 			                        edge.setWeight(Integer.valueOf(((EdgeContext)_localctx).w.retVal));
 			                    }
 			                    if((((EdgeContext)_localctx).c!=null?_input.getText(((EdgeContext)_localctx).c.start,((EdgeContext)_localctx).c.stop):null) != null) {
-			                        Edge.DirectionType dt = Edge.DirectionType.getBySymbol((((EdgeContext)_localctx).c!=null?_input.getText(((EdgeContext)_localctx).c.start,((EdgeContext)_localctx).c.stop):null));
+			                        EdgeEntity.DirectionType dt = EdgeEntity.DirectionType.getBySymbol((((EdgeContext)_localctx).c!=null?_input.getText(((EdgeContext)_localctx).c.start,((EdgeContext)_localctx).c.stop):null));
 			                        if(dt != null) {
 			                            edge.setType(dt);
 			                        }

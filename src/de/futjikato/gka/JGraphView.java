@@ -38,10 +38,10 @@ public class JGraphView extends JApplet {
         return applet;
     }
 
-    public void colorVertices(String color, Collection<String> vertices) {
+    public void colorVertices(String color, Collection<Vertex> vertices) {
         Object[] cells = new Object[vertices.size()];
         int i = 0;
-        for(String vertex : vertices) {
+        for(Vertex vertex : vertices) {
             cells[i++] = vertexToCell.get(vertex);
         }
 

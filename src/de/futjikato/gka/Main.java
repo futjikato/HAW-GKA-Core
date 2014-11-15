@@ -2,7 +2,6 @@ package de.futjikato.gka;
 
 import de.futjikato.gka.reader.GKALexer;
 import de.futjikato.gka.reader.GKAParser;
-import de.futjikato.gka.writer.GraphWriter;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.jgrapht.Graph;
@@ -33,18 +32,30 @@ public final class Main {
         JGraphView.getFrame(graph);
     }
 
-    public static Graph getGraphFromFile(String filename) throws IOException {
+    public static Graph getGraphFromFile(String filename, GraphFactory<Vertex> factory) throws IOException {
         // create token stream for parser
         GKALexer lexer = new GKALexer(new ANTLRFileStream(filename));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         // create parser
         GKAParser parser = new GKAParser(tokens);
+        parser.setGraphFactory(factory);
 
         // parse
         parser.prog();
 
         // get edge list
-        return parser.getGraphFactory().getGraph();
+        return parser.getGraphFactory().createGraph();
+    }
+
+    public static Graph getGraphFromFile(String filename) throws IOException {
+        GraphFactory<Vertex> factory = new GraphFactory<Vertex>() {
+            @Override
+            public Vertex createVertex(String name) {
+                return new Vertex(name);
+            }
+        };
+
+        return getGraphFromFile(filename, factory);
     }
 }
