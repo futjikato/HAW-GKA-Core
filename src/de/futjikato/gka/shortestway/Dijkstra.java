@@ -2,6 +2,7 @@ package de.futjikato.gka.shortestway;
 
 import de.futjikato.gka.GraphFactory;
 import de.futjikato.gka.JGraphView;
+import de.futjikato.gka.Main;
 import de.futjikato.gka.Vertex;
 import de.futjikato.gka.reader.GKALexer;
 import de.futjikato.gka.reader.GKAParser;
@@ -110,7 +111,7 @@ public class Dijkstra implements ShortestWayAlgo {
 
     public static void main(String argv[]) throws IOException {
         Dijkstra dijkstra = new Dijkstra();
-        dijkstra.graph = dijkstra.getGraphFromFile(argv[0], new GraphFactory<Vertex>() {
+        dijkstra.graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex>() {
             @Override
             public Vertex createVertex(String name) {
                 return new DijkstraVertex(name);
@@ -124,22 +125,6 @@ public class Dijkstra implements ShortestWayAlgo {
         if(way != null) {
             view.colorVertices("red", way);
         }
-    }
-
-    public Graph getGraphFromFile(String filename, GraphFactory<Vertex> factory) throws IOException {
-        // create token stream for parser
-        GKALexer lexer = new GKALexer(new ANTLRFileStream(filename));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-        // create parser
-        GKAParser parser = new GKAParser(tokens);
-        parser.setGraphFactory(factory);
-
-        // parse
-        parser.prog();
-
-        // get edge list
-        return parser.getGraphFactory().createGraph();
     }
 
     /**

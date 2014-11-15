@@ -1,6 +1,7 @@
 package de.futjikato.gka;
 
 import org.jgrapht.Graph;
+import org.jgrapht.WeightedGraph;
 import org.jgrapht.graph.*;
 
 import java.util.HashMap;
@@ -67,13 +68,22 @@ public abstract class GraphFactory<T extends Vertex> {
 
                 // add edge
                 if(isDirectional && edge.getType().equals(EdgeEntity.DirectionType.UNDIRECTED )) {
-                    graph.addEdge(vertexA, vertexB);
-                    graph.addEdge(vertexB, vertexA);
+                    Object edge1 = graph.addEdge(vertexA, vertexB);
+                    Object edge2 = graph.addEdge(vertexB, vertexA);
+
+                    if(graph instanceof WeightedGraph) {
+                        ((WeightedGraph) graph).setEdgeWeight(edge1, edge.getWeight());
+                        ((WeightedGraph) graph).setEdgeWeight(edge2, edge.getWeight());
+                    }
 
                     vertexB.connect(vertexA);
                     vertexA.connect(vertexB);
                 } else {
-                    graph.addEdge(vertexA, vertexB);
+                    Object edge3 = graph.addEdge(vertexA, vertexB);
+
+                    if(graph instanceof WeightedGraph) {
+                        ((WeightedGraph) graph).setEdgeWeight(edge3, edge.getWeight());
+                    }
 
                     vertexA.connect(vertexB);
                 }
