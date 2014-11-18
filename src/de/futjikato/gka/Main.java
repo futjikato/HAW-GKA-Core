@@ -34,7 +34,7 @@ public final class Main {
 
     public static Graph getGraphFromFile(String filename, GraphFactory<Vertex> factory) throws IOException {
         // create token stream for parser
-        GKALexer lexer = new GKALexer(new ANTLRFileStream(filename));
+        GKALexer lexer = new GKALexer(new ANTLRFileStream(filename, "UTF-8"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         // create parser
