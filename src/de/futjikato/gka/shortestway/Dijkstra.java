@@ -21,6 +21,10 @@ public class Dijkstra implements ShortestWayAlgo {
 
     private List<DijkstraVertex> orderedQueue = new LinkedList<DijkstraVertex>();
 
+    public Dijkstra(Graph graph) {
+        this.graph = graph;
+    }
+
     @Override
     public List<Vertex> findWay(String nodeA, String nodeB) {
         if(!isValidRequest(nodeA, nodeB)) {
@@ -65,8 +69,6 @@ public class Dijkstra implements ShortestWayAlgo {
                 addInOrder(dijVertex);
             }
 
-            System.out.println(orderedQueue);
-
             if(orderedQueue.size() > 0) {
                 currentNode = orderedQueue.get(0);
             } else {
@@ -75,6 +77,7 @@ public class Dijkstra implements ShortestWayAlgo {
         }
 
         if(endNode == null || !endNode.isFinished()) {
+            System.err.println(String.format("End node: %s ", endNode));
             return null;
         }
 
@@ -110,16 +113,19 @@ public class Dijkstra implements ShortestWayAlgo {
     }
 
     public static void main(String argv[]) throws IOException {
-        Dijkstra dijkstra = new Dijkstra();
-        dijkstra.graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex>() {
+        Graph graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex>() {
             @Override
             public Vertex createVertex(String name) {
                 return new DijkstraVertex(name);
             }
         });
+        Dijkstra dijkstra = new Dijkstra(graph);
 
         List<Vertex> way = dijkstra.findWay(argv[1], argv[2]);
         System.out.println(way);
+        Vertex target = way.get(way.size() - 1);
+        DijkstraVertex dijkstraTarget = (DijkstraVertex) target;
+        System.out.println(String.format("Shortest way : %f", dijkstraTarget.getDistance()));
         JGraphView view = JGraphView.getFrame(dijkstra.graph);
 
         if(way != null) {

@@ -27,14 +27,11 @@ public class Vertex {
     }
 
     public boolean equals(Object other) {
-        if(other instanceof Vertex) {
+        if (other instanceof Vertex) {
             return ((Vertex) other).name.equals(this.name);
         }
 
-        if(other instanceof String) {
-            return other.equals(this.name);
-        }
+        return other instanceof String && other.equals(this.name);
 
-        return false;
     }
 }

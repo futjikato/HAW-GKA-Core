@@ -1,6 +1,7 @@
 package gka.test;
 
 import de.futjikato.gka.Main;
+import de.futjikato.gka.Vertex;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DirectedPseudograph;
 import org.jgrapht.graph.Pseudograph;
@@ -101,17 +102,17 @@ public class ParserToGraphTest {
 
         Assert.assertTrue("graph4.gka wrong graph class", graph instanceof WeightedPseudograph);
 
-        Set<String> vertexSet = new HashSet<String>();
-        vertexSet.add("v1");
-        vertexSet.add("v2");
-        vertexSet.add("v3");
-        vertexSet.add("v4");
-        vertexSet.add("v5");
-        vertexSet.add("v6");
-        vertexSet.add("v7");
-        vertexSet.add("v8");
-        vertexSet.add("s");
-        vertexSet.add("q");
+        Set<Vertex> vertexSet = new HashSet<Vertex>();
+        vertexSet.add(new Vertex("v1"));
+        vertexSet.add(new Vertex("v2"));
+        vertexSet.add(new Vertex("v3"));
+        vertexSet.add(new Vertex("v4"));
+        vertexSet.add(new Vertex("v5"));
+        vertexSet.add(new Vertex("v6"));
+        vertexSet.add(new Vertex("v7"));
+        vertexSet.add(new Vertex("v8"));
+        vertexSet.add(new Vertex("s"));
+        vertexSet.add(new Vertex("q"));
         Assert.assertEquals("graph4.gka vertices set wrong.", vertexSet, graph.vertexSet());
 
         Assert.assertEquals("graph4.gka edge set wrong.", 23, graph.edgeSet().size());
@@ -123,19 +124,19 @@ public class ParserToGraphTest {
 
         Assert.assertTrue("graph6.gka wrong graph class", graph instanceof DirectedPseudograph);
 
-        Set<String> vertexSet = new HashSet<String>();
-        vertexSet.add("1");
-        vertexSet.add("2");
-        vertexSet.add("3");
-        vertexSet.add("4");
-        vertexSet.add("5");
-        vertexSet.add("6");
-        vertexSet.add("7");
-        vertexSet.add("8");
-        vertexSet.add("9");
-        vertexSet.add("10");
-        vertexSet.add("11");
-        vertexSet.add("12");
+        Set<Vertex> vertexSet = new HashSet<Vertex>();
+        vertexSet.add(new Vertex("1"));
+        vertexSet.add(new Vertex("2"));
+        vertexSet.add(new Vertex("3"));
+        vertexSet.add(new Vertex("4"));
+        vertexSet.add(new Vertex("5"));
+        vertexSet.add(new Vertex("6"));
+        vertexSet.add(new Vertex("7"));
+        vertexSet.add(new Vertex("8"));
+        vertexSet.add(new Vertex("9"));
+        vertexSet.add(new Vertex("10"));
+        vertexSet.add(new Vertex("11"));
+        vertexSet.add(new Vertex("12"));
         Assert.assertEquals("graph6.gka vertices set wrong.", vertexSet, graph.vertexSet());
 
         Assert.assertEquals("graph6.gka edge set wrong.", 15, graph.edgeSet().size());

@@ -1,4 +1,4 @@
-// Generated from /home/moritz/java/HAW-GKA-Core/antlr/GKA.g4 by ANTLR 4.1
+// Generated from /Users/moritzspindelhirn/HAW-GPA-Core/antlr/GKA.g4 by ANTLR 4.1
 package de.futjikato.gka.reader;
 
       import java.util.List;

@@ -20,17 +20,24 @@ public class FloydWarshall implements ShortestWayAlgo {
 
     private Map<Integer, Vertex> translationMap = new HashMap<Integer, Vertex>();
 
+    private Map<Integer, Map<Integer, Integer>> transitMap = new HashMap<Integer, Map<Integer, Integer>>();
+
+    private Double lastDistance;
+
+    public FloydWarshall(Graph graph) {
+        this.graph = graph;
+    }
+
     public static void main(String argv[]) throws IOException {
-        FloydWarshall floydWarshall = new FloydWarshall();
-        floydWarshall.graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex>() {
+        Graph graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex>() {
             @Override
             public Vertex createVertex(String name) {
                 return new Vertex(name);
             }
         });
+        FloydWarshall floydWarshall = new FloydWarshall(graph);
 
         List<Vertex> way = floydWarshall.findWay(argv[1], argv[2]);
-        System.out.println(way);
         JGraphView view = JGraphView.getFrame(floydWarshall.graph);
 
         if(way != null) {
@@ -41,10 +48,6 @@ public class FloydWarshall implements ShortestWayAlgo {
     @Override
     public List<Vertex> findWay(String nodeA, String nodeB) {
         initalize();
-        System.out.println(translationMap);
-        System.out.println("+++++++++++++++++++++++++");
-        System.out.println(distanceMatrix);
-        System.out.print("+++++++++++++++++++++++++\n\n");
 
         int max = graph.vertexSet().size();
         for(int iteration = 0 ; iteration < max ; iteration++) {
@@ -88,19 +91,51 @@ public class FloydWarshall implements ShortestWayAlgo {
 
                         if(old == INFINITE || old > newSum) {
                             distanceMatrix.get(rowCount).put(cellCount, newSum);
+                            addWaypoint(rowCount, cellCount, iteration);
                         }
                     }
                 }
             }
-
-            System.out.println(distanceMatrix);
         }
-        return null;
+
+        int nodeAIndex = -1;
+        int nodeBIndex = -1;
+        for(int key : translationMap.keySet()) {
+            if(translationMap.get(key).equals(nodeA)) {
+                nodeAIndex = key;
+            } else if(translationMap.get(key).equals(nodeB)) {
+                nodeBIndex = key;
+            }
+        }
+
+        if(nodeAIndex == -1 || nodeBIndex == -1) {
+            System.err.println("Start or Endnode not found.");
+            return null;
+        }
+
+        lastDistance = distanceMatrix.get(nodeAIndex).get(nodeBIndex);
+        if(lastDistance == -1) {
+            return null;
+        }
+
+        List<Integer> intWay = getFullWay(nodeAIndex, nodeBIndex);
+        intWay.add(nodeBIndex);
+        List<Vertex> verticesWay = new LinkedList<Vertex>();
+
+        for(int waypoint : intWay) {
+            verticesWay.add(translationMap.get(waypoint));
+        }
+
+        return verticesWay;
     }
 
     @Override
     public boolean isValidRequest(String nodeA, String nodeB) {
         return false;
+    }
+
+    public Double getLastDistance() {
+        return lastDistance;
     }
 
     /**
@@ -149,5 +184,27 @@ public class FloydWarshall implements ShortestWayAlgo {
         }
 
         return val;
+    }
+
+    private void addWaypoint(int from, int to, int waypoint) {
+        if(!transitMap.containsKey(from)) {
+            transitMap.put(from, new HashMap<Integer, Integer>());
+        }
+
+        transitMap.get(from).put(to, waypoint);
+    }
+
+    private List<Integer> getFullWay(int from, int to) {
+        List<Integer> way = new LinkedList<Integer>();
+
+        if(transitMap.containsKey(from) && transitMap.get(from).containsKey(to)) {
+            int waypoint = transitMap.get(from).get(to);
+            way.addAll(getFullWay(from, waypoint));
+            way.addAll(getFullWay(waypoint, to));
+        } else {
+            way.add(from);
+        }
+
+        return way;
     }
 }
