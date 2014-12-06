@@ -17,8 +17,8 @@ import java.util.List;
 public class DijsktaFloydWarshallTest {
 
     private static final int TEST_RUNS = 50;
-    private static final int TEST_VERTICES = 100;
-    private static final int TEST_EDGES = 500;
+    private static final int TEST_VERTICES = 300;
+    private static final int TEST_EDGES = 2000;
 
     @Test
     public void DijkstraFWBigTest() {
