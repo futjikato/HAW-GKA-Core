@@ -4,6 +4,7 @@ import de.futjikato.gka.GraphFactory;
 import de.futjikato.gka.JGraphView;
 import de.futjikato.gka.Main;
 import de.futjikato.gka.Vertex;
+import org.jgrapht.EdgeFactory;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -29,10 +30,20 @@ public class FloydWarshall implements ShortestWayAlgo {
     }
 
     public static void main(String argv[]) throws IOException {
-        Graph graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex>() {
+        Graph graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex, DefaultWeightedEdge>() {
             @Override
             public Vertex createVertex(String name) {
                 return new Vertex(name);
+            }
+
+            @Override
+            public EdgeFactory<Vertex, DefaultWeightedEdge> getEdgeFactory() {
+                return new EdgeFactory<Vertex, DefaultWeightedEdge>() {
+                    @Override
+                    public DefaultWeightedEdge createEdge(Vertex vertex, Vertex v1) {
+                        return new DefaultWeightedEdge();
+                    }
+                };
             }
         });
         FloydWarshall floydWarshall = new FloydWarshall(graph);

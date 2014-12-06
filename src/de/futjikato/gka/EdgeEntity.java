@@ -29,7 +29,7 @@ public class EdgeEntity {
 
     private String name;
 
-    private int weight = 0;
+    private int weight = 1;
 
     private DirectionType type;
 

@@ -2,24 +2,26 @@ package de.futjikato.gka;
 
 import java.util.*;
 
-public class Vertex {
+public class Vertex<T extends Vertex> {
 
-    private List<Vertex> nextVertices;
+    private List<T> nextVertices;
 
     protected String name;
 
     public Vertex(String name) {
         this.name = name;
 
-        nextVertices = new LinkedList<Vertex>();
+        nextVertices = new LinkedList<T>();
     }
 
-    public void connect(Vertex vertex) {
-        nextVertices.add(vertex);
+    public void connect(T vertex) {
+        if(!nextVertices.contains(vertex)) {
+            nextVertices.add(vertex);
+        }
     }
 
-    public List<Vertex> getVertices() {
-        return new ArrayList<Vertex>(nextVertices);
+    public List<T> getVertices() {
+        return new ArrayList<T>(nextVertices);
     }
 
     public String toString() {

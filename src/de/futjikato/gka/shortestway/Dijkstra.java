@@ -9,6 +9,7 @@ import de.futjikato.gka.reader.GKAParser;
 import de.futjikato.gka.shortestway.dijkstra.DijkstraVertex;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.jgrapht.EdgeFactory;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -113,10 +114,20 @@ public class Dijkstra implements ShortestWayAlgo {
     }
 
     public static void main(String argv[]) throws IOException {
-        Graph graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex>() {
+        Graph graph = Main.getGraphFromFile(argv[0], new GraphFactory<Vertex, DefaultWeightedEdge>() {
             @Override
             public Vertex createVertex(String name) {
                 return new DijkstraVertex(name);
+            }
+
+            @Override
+            public EdgeFactory<Vertex, DefaultWeightedEdge> getEdgeFactory() {
+                return new EdgeFactory<Vertex, DefaultWeightedEdge>() {
+                    @Override
+                    public DefaultWeightedEdge createEdge(Vertex vertex, Vertex v1) {
+                        return new DefaultWeightedEdge();
+                    }
+                };
             }
         });
         Dijkstra dijkstra = new Dijkstra(graph);

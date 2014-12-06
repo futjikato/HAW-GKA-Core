@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
+	  import org.jgrapht.graph.DefaultWeightedEdge;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class GKALexer extends Lexer {
@@ -39,13 +40,13 @@ public class GKALexer extends Lexer {
 
 
 	          
-	          private GraphFactory<Vertex> graphFactory;
+	          private GraphFactory graphFactory;
 	          
-	          public GraphFactory<Vertex> getGraphFactory() {
+	          public GraphFactory getGraphFactory() {
 	              return graphFactory;
 	          }
 	          
-	          public void setGraphFactory(GraphFactory<Vertex> factory) {
+	          public void setGraphFactory(GraphFactory factory) {
 	              this.graphFactory = factory;
 	          }
 

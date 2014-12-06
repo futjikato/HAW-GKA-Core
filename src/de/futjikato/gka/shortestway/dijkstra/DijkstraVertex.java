@@ -5,7 +5,7 @@ import de.futjikato.gka.Vertex;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DijkstraVertex extends Vertex {
+public class DijkstraVertex extends Vertex<DijkstraVertex> {
 
     private double distance;
 
@@ -42,15 +42,12 @@ public class DijkstraVertex extends Vertex {
     }
 
     public List<DijkstraVertex> getNext() {
-        List<Vertex> neighbors = getVertices();
+        List<DijkstraVertex> neighbors = getVertices();
         List<DijkstraVertex> next = new LinkedList<DijkstraVertex>();
 
-        for(Vertex check : neighbors) {
-            if(check instanceof DijkstraVertex) {
-                DijkstraVertex dijkstraVertex = (DijkstraVertex) check;
-                if(!dijkstraVertex.finished) {
-                    next.add(dijkstraVertex);
-                }
+        for(DijkstraVertex check : neighbors) {
+            if(!check.finished) {
+                next.add(check);
             }
         }
 
