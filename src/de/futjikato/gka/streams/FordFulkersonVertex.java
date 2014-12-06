@@ -70,6 +70,8 @@ public class FordFulkersonVertex extends Vertex<FordFulkersonVertex> {
     }
 
     public void resetMarking() {
+        markedPartner = null;
+        delta = 0d;
         marked = false;
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FordFulkerson {
 
-    private Graph<FordFulkersonVertex, FordFulkersonEdge> graph;
+    protected Graph<FordFulkersonVertex, FordFulkersonEdge> graph;
 
     public FordFulkerson(Graph<FordFulkersonVertex, FordFulkersonEdge> graph) {
         this.graph = graph;
@@ -123,16 +123,7 @@ public class FordFulkerson {
             }
         }
 
-        // calculate flow by making at cut with source only vs. rest
-        double flow = 0;
-        for(FordFulkersonVertex n : sourceNode.getVertices()) {
-            flow += graph.getEdge(sourceNode, n).getStream();
-        }
-        for(FordFulkersonVertex rn : sourceNode.getReverseVertices()) {
-            flow -= graph.getEdge(rn, sourceNode).getStream();
-        }
-
-        return flow;
+        return calcFlowFromStartVertex(sourceNode);
     }
 
     private void optimizeStream(FordFulkersonVertex targetNode, FordFulkersonVertex sourceNode) {
@@ -159,11 +150,24 @@ public class FordFulkerson {
         }
     }
 
-    private void resetMarkings(FordFulkersonVertex sourceNode) {
+    protected void resetMarkings(FordFulkersonVertex sourceNode) {
         for(FordFulkersonVertex ffVertex : graph.vertexSet()) {
             if(!ffVertex.equals(sourceNode)) {
                 ffVertex.resetMarking();
             }
         }
+    }
+
+    protected double calcFlowFromStartVertex(FordFulkersonVertex sourceNode) {
+        // calculate flow by making at cut with source only vs. rest
+        double flow = 0;
+        for(FordFulkersonVertex n : sourceNode.getVertices()) {
+            flow += graph.getEdge(sourceNode, n).getStream();
+        }
+        for(FordFulkersonVertex rn : sourceNode.getReverseVertices()) {
+            flow -= graph.getEdge(rn, sourceNode).getStream();
+        }
+
+        return flow;
     }
 }
