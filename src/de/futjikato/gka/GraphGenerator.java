@@ -33,14 +33,39 @@ public abstract class GraphGenerator<V, E> {
     private Graph<V, E> graph;
 
     public Graph<V, E> generate(int vertexCount, int edgeCount) {
+        return generate(vertexCount, edgeCount, false);
+    }
+
+    public Graph<V, E> generate(int vertexCount, int edgeCount, boolean connected) {
         graph = createGraph();
 
         int vertices = 0;
+        int edges = 0;
+
         while(vertices < vertexCount) {
             V vertex = createVertex(vertices);
             if(!graph.containsVertex(vertex)) {
                 graph.addVertex(vertex);
                 vertices++;
+            }
+
+            /**
+             * make sure we have one big component
+             */
+            if(connected && vertices > 1) {
+                V other;
+                do {
+                    other = graph.vertexSet().iterator().next();
+                } while(other.equals(vertex));
+
+                E e = createEdge(vertex, other);
+                if(graph instanceof WeightedGraph) {
+                    graph.addEdge(vertex, other, e);
+                    ((WeightedGraph<V, E>) graph).setEdgeWeight(e, createEdgeWeight());
+                } else {
+                    graph.addEdge(vertex, other, e);
+                }
+                edges++;
             }
         }
 
@@ -57,20 +82,28 @@ public abstract class GraphGenerator<V, E> {
             throw new IllegalArgumentException("Edge count exceeds maximum amount of possible edges");
         }
 
-        int edges = 0;
         while(edges < edgeCount) {
             VertexTuple tuple = cartesian.remove(0);
+            E e = createEdge(tuple.getA(), tuple.getB());
             if(graph instanceof WeightedGraph) {
-                E e = createEdge(tuple.getA(), tuple.getB());
                 graph.addEdge(tuple.getA(), tuple.getB(), e);
                 ((WeightedGraph<V, E>) graph).setEdgeWeight(e, createEdgeWeight());
             } else {
-                graph.addEdge(tuple.getA(), tuple.getB(), createEdge(tuple.getA(), tuple.getB()));
+                graph.addEdge(tuple.getA(), tuple.getB(), e);
             }
             edges++;
         }
 
         return graph;
+    }
+
+    public void networkify() {
+        /**
+         * @ToDo
+         *
+         * insert q and connect to vertices
+         * insert s and connect some vertices to s
+         */
     }
 
     private List<VertexTuple> createCartesian(Set<V> vertices, boolean asymmetric) {
