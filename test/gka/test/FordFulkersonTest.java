@@ -34,13 +34,7 @@ public class FordFulkersonTest {
 
             @Override
             public FordFulkersonVertex createVertex(int no) {
-                if(no == 1) {
-                    return new FordFulkersonVertex("q");
-                } else if(no == 2) {
-                    return new FordFulkersonVertex("s");
-                } else {
-                    return new FordFulkersonVertex(String.format("v%d", no));
-                }
+                return new FordFulkersonVertex(String.format("v%d", no));
             }
 
             @Override
@@ -57,7 +51,8 @@ public class FordFulkersonTest {
         };
 
         for(int i = 0 ; i < TEST_RUNS ; i++) {
-            Graph<FordFulkersonVertex, FordFulkersonEdge> g = generator.generate(TEST_VERTICES, TEST_EDGES);
+            Graph<FordFulkersonVertex, FordFulkersonEdge> g = generator.generate(TEST_VERTICES, TEST_EDGES, true);
+            generator.networkify(new FordFulkersonVertex("q"), new FordFulkersonVertex("s"));
 
             FordFulkerson fordFulkerson = new FordFulkerson(g);
             double flow = fordFulkerson.calculateFlow("q", "s");
@@ -70,7 +65,7 @@ public class FordFulkersonTest {
     @Test
     public void testGraph4() {
         try {
-            Graph<FordFulkersonVertex, FordFulkersonEdge> graph = Main.getGraphFromFile("/home/moritz/java/HAW-GKA-Core/graphs/graph4.gka", FordFulkerson.createGraphFactory());
+            Graph<FordFulkersonVertex, FordFulkersonEdge> graph = Main.getGraphFromFile("./graphs/graph4.gka", FordFulkerson.createGraphFactory());
 
             FordFulkerson fordFulkerson = new FordFulkerson(graph);
             double flow = fordFulkerson.calculateFlow("q", "s");
@@ -85,7 +80,7 @@ public class FordFulkersonTest {
     @Test
     public void testSmallNet() {
         try {
-            Graph<FordFulkersonVertex, FordFulkersonEdge> graph = Main.getGraphFromFile("/home/moritz/java/HAW-GKA-Core/graphs/smallnet.gka", FordFulkerson.createGraphFactory());
+            Graph<FordFulkersonVertex, FordFulkersonEdge> graph = Main.getGraphFromFile("./graphs/smallnet.gka", FordFulkerson.createGraphFactory());
 
             FordFulkerson fordFulkerson = new FordFulkerson(graph);
             double flow = fordFulkerson.calculateFlow("q", "s");

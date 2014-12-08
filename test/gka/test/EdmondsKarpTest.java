@@ -16,7 +16,7 @@ public class EdmondsKarpTest {
     @Test
     public void testGraph4() {
         try {
-            Graph<FordFulkersonVertex, FordFulkersonEdge> graph = Main.getGraphFromFile("/home/moritz/java/HAW-GKA-Core/graphs/graph4.gka", FordFulkerson.createGraphFactory());
+            Graph<FordFulkersonVertex, FordFulkersonEdge> graph = Main.getGraphFromFile("./graphs/graph4.gka", FordFulkerson.createGraphFactory());
 
             EdmondsKarp edmondsKarp = new EdmondsKarp(graph);
             double flow = edmondsKarp.calculateFlow("q", "s");
@@ -31,7 +31,7 @@ public class EdmondsKarpTest {
     @Test
     public void testSmallNet() {
         try {
-            Graph<FordFulkersonVertex, FordFulkersonEdge> graph = Main.getGraphFromFile("/home/moritz/java/HAW-GKA-Core/graphs/smallnet.gka", FordFulkerson.createGraphFactory());
+            Graph<FordFulkersonVertex, FordFulkersonEdge> graph = Main.getGraphFromFile("./graphs/smallnet.gka", FordFulkerson.createGraphFactory());
 
             EdmondsKarp edmondsKarp = new EdmondsKarp(graph);
             double flow = edmondsKarp.calculateFlow("q", "s");

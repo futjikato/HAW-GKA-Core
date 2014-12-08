@@ -4,10 +4,7 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graph;
 import org.jgrapht.WeightedGraph;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class GraphGenerator<V, E> {
 
@@ -42,6 +39,8 @@ public abstract class GraphGenerator<V, E> {
         int vertices = 0;
         int edges = 0;
 
+        V firstVertex = null;
+
         while(vertices < vertexCount) {
             V vertex = createVertex(vertices);
             if(!graph.containsVertex(vertex)) {
@@ -52,20 +51,36 @@ public abstract class GraphGenerator<V, E> {
             /**
              * make sure we have one big component
              */
-            if(connected && vertices > 1) {
-                V other;
-                do {
-                    other = graph.vertexSet().iterator().next();
-                } while(other.equals(vertex));
+            if(connected) {
+                if(vertices > 1) {
+                    V other;
+                    do {
+                        other = graph.vertexSet().iterator().next();
+                    } while (other.equals(vertex));
 
-                E e = createEdge(vertex, other);
-                if(graph instanceof WeightedGraph) {
-                    graph.addEdge(vertex, other, e);
-                    ((WeightedGraph<V, E>) graph).setEdgeWeight(e, createEdgeWeight());
+                    E e = createEdge(vertex, other);
+                    if (graph instanceof WeightedGraph) {
+                        graph.addEdge(vertex, other, e);
+                        ((WeightedGraph<V, E>) graph).setEdgeWeight(e, createEdgeWeight());
+                    } else {
+                        graph.addEdge(vertex, other, e);
+                    }
+                    edges++;
+
+                    // connect first created vertex with second one so it is also not unconnected
+                    if(firstVertex != null) {
+                        e = createEdge(firstVertex, vertex);
+                        if (graph instanceof WeightedGraph) {
+                            graph.addEdge(firstVertex, vertex, e);
+                            ((WeightedGraph<V, E>) graph).setEdgeWeight(e, createEdgeWeight());
+                        } else {
+                            graph.addEdge(firstVertex, vertex, e);
+                        }
+                        edges++;
+                    }
                 } else {
-                    graph.addEdge(vertex, other, e);
+                    firstVertex = vertex;
                 }
-                edges++;
             }
         }
 
@@ -97,13 +112,34 @@ public abstract class GraphGenerator<V, E> {
         return graph;
     }
 
-    public void networkify() {
-        /**
-         * @ToDo
-         *
-         * insert q and connect to vertices
-         * insert s and connect some vertices to s
-         */
+    public void networkify(V source, V target) {
+        double connects = Math.floor(2 + Math.random() * 10);
+
+        Set<V> vertexSet = graph.vertexSet();
+        List<V> vertexList = new LinkedList<V>();
+        vertexList.addAll(vertexSet);
+        Collections.shuffle(vertexList);
+
+        graph.addVertex(source);
+        graph.addVertex(target);
+
+        for(int i = 1 ; i < connects ; i++) {
+            V connectedVertex = vertexList.remove(0);
+            E connectedEdge = createEdge(source, connectedVertex);
+            if(graph instanceof WeightedGraph) {
+                ((WeightedGraph<V, E>) graph).setEdgeWeight(connectedEdge, createEdgeWeight());
+            }
+            graph.addEdge(source, connectedVertex, connectedEdge);
+        }
+
+        for(int j = 1 ; j < connects ; j++) {
+            V connectedVertex = vertexList.remove(0);
+            E connectedEdge = createEdge(connectedVertex, target);
+            if(graph instanceof WeightedGraph) {
+                ((WeightedGraph<V, E>) graph).setEdgeWeight(connectedEdge, createEdgeWeight());
+            }
+            graph.addEdge(connectedVertex, target, connectedEdge);
+        }
     }
 
     private List<VertexTuple> createCartesian(Set<V> vertices, boolean asymmetric) {

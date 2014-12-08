@@ -32,13 +32,7 @@ public class FlowTests {
 
             @Override
             public FordFulkersonVertex createVertex(int no) {
-                if(no == 1) {
-                    return new FordFulkersonVertex("q");
-                } else if(no == 2) {
-                    return new FordFulkersonVertex("s");
-                } else {
-                    return new FordFulkersonVertex(String.format("v%d", no));
-                }
+                return new FordFulkersonVertex(String.format("v%d", no));
             }
 
             @Override
@@ -59,6 +53,7 @@ public class FlowTests {
         System.out.println("Start:");
         for(int i = 0 ; i < TEST_RUNS ; i++) {
             Graph<FordFulkersonVertex, FordFulkersonEdge> g = generator.generate(TEST_VERTICES, TEST_EDGES);
+            generator.networkify(new FordFulkersonVertex("q"), new FordFulkersonVertex("s"));
 
             long ms = System.currentTimeMillis();
             FordFulkerson fordFulkerson = new FordFulkerson(g);
