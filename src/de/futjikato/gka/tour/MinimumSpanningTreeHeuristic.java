@@ -50,7 +50,7 @@ public class MinimumSpanningTreeHeuristic {
         this.graph = graph;
     }
 
-    public void createTour(Set<VisitableVertex> tourVertices) {
+    public List<VisitableWeightedEdge> createTour(Set<VisitableVertex> tourVertices) {
         // create MST with Kruskal
         Kruskal kruskal = new Kruskal(graph);
         List<VisitableWeightedEdge> mst = kruskal.createMinimalSPanningTree(tourVertices);
@@ -59,6 +59,8 @@ public class MinimumSpanningTreeHeuristic {
         List<VisitableWeightedEdge> tour = doubleEdges(mst);
 
         List<VisitableWeightedEdge> optTour = optimizeTour(tour);
+
+        return tour;
     }
 
     private List<VisitableWeightedEdge> doubleEdges(List<VisitableWeightedEdge> mst) {
@@ -82,9 +84,61 @@ public class MinimumSpanningTreeHeuristic {
         List<VisitableWeightedEdge> tour = new LinkedList<VisitableWeightedEdge>();
         tour.addAll(oldTour);
 
-        for(VisitableWeightedEdge edge : tour) {
-            VisitableVertex source = graph.getEdgeSource(edge);
-            VisitableVertex target = graph.getEdgeTarget(edge);
+        boolean doOpt = true;
+        while(doOpt) {
+            doOpt = false;
+            for(VisitableWeightedEdge edge1 : tour) {
+                if(hasCopy(edge1, tour)) {
+                    VisitableVertex source1 = graph.getEdgeSource(edge1);
+                    VisitableVertex target1 = graph.getEdgeTarget(edge1);
+
+                    for(VisitableWeightedEdge edge2 : tour) {
+                        VisitableVertex source2 = graph.getEdgeSource(edge2);
+                        VisitableVertex target2 = graph.getEdgeTarget(edge2);
+
+                        if((source1 == source2 && target1 != target2) ||
+                           (source1 != source2 && target1 == target2) &&
+                           hasCopy(edge2, tour)) {
+
+                            tour.remove(edge1);
+                            tour.remove(edge2);
+                            if(source1 == source2) {
+                                VisitableWeightedEdge replacementEdge = graph.getEdge(target1, target2);
+                                if(replacementEdge == null) {
+                                    replacementEdge = graph.getEdge(target2, target1);
+                                }
+
+                                tour.add(replacementEdge);
+                            } else {
+                                VisitableWeightedEdge replacementEdge = graph.getEdge(source1, source2);
+                                if(replacementEdge == null) {
+                                    replacementEdge = graph.getEdge(source2, source1);
+                                }
+
+                                tour.add(replacementEdge);
+                            }
+
+                            doOpt = true;
+                        }
+                    }
+                }
+            }
         }
+
+        return tour;
+    }
+
+    protected boolean hasCopy(VisitableWeightedEdge edge, List<VisitableWeightedEdge> list) {
+        for(VisitableWeightedEdge checkEdge : list) {
+            if(
+                edge != checkEdge &&
+                graph.getEdgeSource(edge) == graph.getEdgeSource(checkEdge) &&
+                graph.getEdgeTarget(edge) == graph.getEdgeTarget(checkEdge)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
