@@ -8,6 +8,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.WeightedGraph;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,13 @@ public class MinimumSpanningTreeHeuristic {
         WeightedGraph<VisitableVertex, VisitableWeightedEdge> wGraph = (WeightedGraph<VisitableVertex, VisitableWeightedEdge>) graph;
         MinimumSpanningTreeHeuristic msth = new MinimumSpanningTreeHeuristic(wGraph);
 
-        List<VisitableWeightedEdge> tour = msth.createTour();
+        List<VisitableWeightedEdge> tour;
+        if(argv.length >= 2) {
+            Set<VisitableVertex> vertices = createVerticesSetFromUserInput(argv[1], graph);
+            tour = msth.createTour(vertices);
+        } else {
+            tour = msth.createTour();
+        }
 
         JGraphView view = JGraphView.getFrame(graph);
 
@@ -208,5 +215,27 @@ public class MinimumSpanningTreeHeuristic {
         }
 
         return false;
+    }
+
+    /**
+     * Helper method to make a vertices set from program argument string
+     *
+     * @param s
+     * @param graph
+     * @return
+     */
+    private static Set<VisitableVertex> createVerticesSetFromUserInput(String s, Graph<VisitableVertex, VisitableWeightedEdge> graph) {
+        String[] names = s.split("\\s");
+        Set<VisitableVertex> vertices = new HashSet<VisitableVertex>();
+
+        for(VisitableVertex v : graph.vertexSet()) {
+            for(String n : names) {
+                if(v.equals(n)) {
+                    vertices.add(v);
+                }
+            }
+        }
+
+        return vertices;
     }
 }
