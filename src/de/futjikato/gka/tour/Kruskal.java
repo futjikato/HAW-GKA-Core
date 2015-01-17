@@ -2,10 +2,7 @@ package de.futjikato.gka.tour;
 
 import org.jgrapht.Graph;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Kruskal {
 
@@ -20,13 +17,8 @@ public class Kruskal {
         List<VisitableWeightedEdge> mst = new LinkedList<VisitableWeightedEdge>();
 
         for(VisitableWeightedEdge edge : sortedEdgeList) {
-            VisitableVertex s = graph.getEdgeSource(edge);
-            VisitableVertex t = graph.getEdgeTarget(edge);
-
-            if(!s.isVisited() || !t.isVisited()) {
+            if(cycleCheck(mst, edge)) {
                 mst.add(edge);
-                s.visit();
-                t.visit();
             }
         }
 
@@ -34,6 +26,10 @@ public class Kruskal {
         unvisitEverything();
 
         return mst;
+    }
+
+    public List<VisitableWeightedEdge> createMinimalSPanningTree() {
+        return createMinimalSPanningTree(graph.vertexSet());
     }
 
     private List<VisitableWeightedEdge> createInput(Set<VisitableVertex> vertexSet) {
@@ -81,5 +77,43 @@ public class Kruskal {
         for(VisitableVertex vertex : graph.vertexSet()) {
             vertex.unvisit();
         }
+    }
+
+    private boolean cycleCheck(List<VisitableWeightedEdge> mst, VisitableWeightedEdge edge) {
+        for(VisitableVertex vertex : graph.vertexSet()) {
+            vertex.unvisit();
+        }
+
+        VisitableVertex start = graph.getEdgeSource(edge);
+        VisitableVertex end = graph.getEdgeTarget(edge);
+
+        Stack<VisitableVertex> stack = new Stack<VisitableVertex>();
+        start.visit();
+        stack.add(start);
+
+        while(!stack.isEmpty()) {
+            VisitableVertex current = stack.pop();
+            if(current == end) {
+                // cycle found
+                return false;
+            }
+
+            Set<VisitableWeightedEdge> edges = graph.edgesOf(current);
+            for(VisitableWeightedEdge edgeOfCurrent : edges) {
+                if(mst.contains(edgeOfCurrent)) {
+                    VisitableVertex toAdd = graph.getEdgeSource(edgeOfCurrent);
+                    if(toAdd == current) {
+                        toAdd = graph.getEdgeTarget(edgeOfCurrent);
+                    }
+                    if(!toAdd.isVisited()) {
+                        stack.add(toAdd);
+                        toAdd.visit();
+                    }
+                }
+            }
+        }
+
+        // no cycle
+        return true;
     }
 }

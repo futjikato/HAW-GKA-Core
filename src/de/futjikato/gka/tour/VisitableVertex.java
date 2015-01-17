@@ -2,7 +2,7 @@ package de.futjikato.gka.tour;
 
 import de.futjikato.gka.Vertex;
 
-public class VisitableVertex extends Vertex<Vertex> {
+public class VisitableVertex extends Vertex<VisitableVertex> {
 
     private boolean visited = false;
 

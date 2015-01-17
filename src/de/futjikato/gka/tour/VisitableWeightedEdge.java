@@ -1,8 +1,8 @@
 package de.futjikato.gka.tour;
 
-import org.jgrapht.graph.DefaultWeightedEdge;
+import de.futjikato.gka.WeightNameEdge;
 
-public class VisitableWeightedEdge extends DefaultWeightedEdge {
+public class VisitableWeightedEdge extends WeightNameEdge {
 
     private boolean visited = false;
 
@@ -17,4 +17,5 @@ public class VisitableWeightedEdge extends DefaultWeightedEdge {
     public void unvisit() {
         visited = false;
     }
+
 }
