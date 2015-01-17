@@ -52,18 +52,18 @@ public final class Main {
     }
 
     public static Graph getGraphFromFile(String filename) throws IOException {
-        GraphFactory<Vertex, DefaultWeightedEdge> factory = new GraphFactory<Vertex, DefaultWeightedEdge>() {
+        GraphFactory<Vertex, WeightNameEdge> factory = new GraphFactory<Vertex, WeightNameEdge>() {
             @Override
             public Vertex createVertex(String name) {
                 return new Vertex(name);
             }
 
             @Override
-            public EdgeFactory<Vertex, DefaultWeightedEdge> getEdgeFactory() {
-                return new EdgeFactory<Vertex, DefaultWeightedEdge>() {
+            public EdgeFactory<Vertex, WeightNameEdge> getEdgeFactory() {
+                return new EdgeFactory<Vertex, WeightNameEdge>() {
                     @Override
-                    public DefaultWeightedEdge createEdge(Vertex vertex, Vertex v1) {
-                        return new DefaultWeightedEdge();
+                    public WeightNameEdge createEdge(Vertex vertex, Vertex v1) {
+                        return new WeightNameEdge();
                     }
                 };
             }

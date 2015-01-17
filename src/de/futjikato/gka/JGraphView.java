@@ -13,14 +13,15 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class JGraphView extends JApplet {
 
     private static final Dimension DEFAULT_SIZE = new Dimension(530, 320);
 
     private HashMap<String, mxICell> vertexToCell;
+
+    private HashMap<DefaultEdge, mxICell> edgeToCell;
 
     private mxGraph mxg;
 
@@ -48,6 +49,16 @@ public class JGraphView extends JApplet {
         mxg.setCellStyles(mxConstants.STYLE_FILLCOLOR, color, cells);
     }
 
+    public void colorEdges(String color, Collection edges) {
+        Object[] cells = new Object[edges.size()];
+        int i = 0;
+        for(Object edge : edges) {
+            cells[i++] = edgeToCell.get(edge);
+        }
+
+        mxg.setCellStyles(mxConstants.STYLE_STROKECOLOR, color, cells);
+    }
+
     public JGraphView(Graph graph) {
         // create a visualization using JGraph, via an adapter
         JGraphXAdapter jgxAdapter;
@@ -58,6 +69,11 @@ public class JGraphView extends JApplet {
         }
 
         vertexToCell = jgxAdapter.getVertexToCellMap();
+        edgeToCell = jgxAdapter.getEdgeToCellMap();
+
+        Map<String, Object> style = jgxAdapter.getStylesheet().getDefaultEdgeStyle();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CURVE);
+
         mxGraphComponent mxGraphComponent = new mxGraphComponent(jgxAdapter);
         mxg = mxGraphComponent.getGraph();
         getContentPane().add(mxGraphComponent);
