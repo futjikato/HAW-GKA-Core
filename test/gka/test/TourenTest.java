@@ -7,6 +7,7 @@ import de.futjikato.gka.streams.FordFulkerson;
 import de.futjikato.gka.streams.FordFulkersonEdge;
 import de.futjikato.gka.streams.FordFulkersonVertex;
 import de.futjikato.gka.tour.MinimumSpanningTreeHeuristic;
+import de.futjikato.gka.tour.NearestNeighbourAlgorithm;
 import de.futjikato.gka.tour.VisitableVertex;
 import de.futjikato.gka.tour.VisitableWeightedEdge;
 import org.jgrapht.EdgeFactory;
@@ -16,6 +17,7 @@ import org.jgrapht.graph.DirectedWeightedPseudograph;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.System;
 import java.util.List;
 
 /**
@@ -84,13 +86,13 @@ public class TourenTest {
             }
 
             ms = System.currentTimeMillis();
-            /**
-             * RUN NEAREST VERTEX ALGO HERE
-             */
+
+            NearestNeighbourAlgorithm nna = new NearestNeighbourAlgorithm(wg);
+            List<VisitableWeightedEdge> nnaTour = nna.findTour();
             long karpTime = System.currentTimeMillis() - ms;
             nearestTotalTime += karpTime;
             int nvTourLength = 0;
-            for(VisitableWeightedEdge edge : tour) {
+            for(VisitableWeightedEdge edge : nnaTour) {
                 nvTourLength += g.getEdgeWeight(edge);
             }
 

@@ -151,4 +151,24 @@ public class NearestNeighbourAlgorithm {
          */
         return null;
     }
+
+    public List<VisitableWeightedEdge> findTour() {
+        /**
+         * Pick startVertex randomly
+         */
+        Random randomGenerator = new Random();
+        Set<VisitableVertex> verticesSet = graph.vertexSet();
+        VisitableVertex[] verticesArray = verticesSet.toArray(new VisitableVertex[verticesSet.size()]);
+        Integer size = verticesSet.size();
+        /**
+         * Generates random Integer between 0 (incl) and size (excl)
+         */
+        int randomIndex = randomGenerator.nextInt(size);
+        firstVertex = verticesArray[randomIndex];
+
+        /**
+         * Find tour with algorithm
+         */
+        return NearestNeighbourAlgorithm.findTour(firstVertex);
+    }
 }
