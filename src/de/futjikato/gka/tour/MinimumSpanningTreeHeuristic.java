@@ -224,7 +224,7 @@ public class MinimumSpanningTreeHeuristic {
      * @param graph
      * @return
      */
-    private static Set<VisitableVertex> createVerticesSetFromUserInput(String s, Graph<VisitableVertex, VisitableWeightedEdge> graph) {
+    static Set<VisitableVertex> createVerticesSetFromUserInput(String s, Graph<VisitableVertex, VisitableWeightedEdge> graph) {
         String[] names = s.split("\\s");
         Set<VisitableVertex> vertices = new HashSet<VisitableVertex>();
 
