@@ -17,6 +17,7 @@ Bearbeitungszeitraum:
 
 * 6 Stunden ( MSTH )
 * 2 Stunden ( Tests, Dokumentation )
+* 10 Stunden ( NNA )
 
 Minimaler-Spannbaum-Heuristik:
 ---------------
@@ -33,6 +34,11 @@ Der Algorithmus sortiert alle Kanten absteigend nach Kantengewicht. Danach wird 
 
 Nächstgelegner-Knoten-Algorithmus:
 -------------
+Der Graph muss ein metrischer und vollständiger ```WeightedGraph``` sein und ebenfalls ```VisitableWeightedEdge``` Kantentypen und ```VisitableVertex``` Vertextypen nutzen.
+
+Zunächst wird randomisiert der Startknoten ausgewählt und alle noch unbesuchten Knoten in ein Set eingefügt. Der aktuelle Knoten wird auf visited gesetzt. Anschließend werden alle inzidenten Kanten des aktuellen Knotens gesucht, deren Zielknoten noch unvisited ist.
+Die inzidente Kante mit dem kleinsten Gewicht wird dabei als nächste Kante in die Tour aufgenommen, es folgt ein rekursiver Aufruf des Algorithmus nun mit dem Ziel dieser Kante als aktuellen Knoten.
+Der Algorithmus terminiert, wenn das Set mit den unbesuchten Knoten leer ist. Er sucht dann den Pfad zwischen dem letzten und ersten Knoten und gibt die Tour aus.
 
 Vergleich:
 ----------
